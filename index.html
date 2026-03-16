@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tripura Vastra | Tiprasa Shop</title>
+    <title>Tripura Vastra | Global Shop</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
@@ -12,32 +12,33 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
 
     <style>
-        :root { --primary: #d63031; --secondary: #2d3436; --success: #25D366; --upi: #0971b8; --light: #f9f9f9; }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        body { background-color: var(--light); color: var(--secondary); }
+        /* Keeping your beautiful design from index (19).html */
+        :root { --primary: #d63031; --secondary: #2d3436; --success: #25D366; --upi-blue: #0971b8; --light: #f9f9f9; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background-color: var(--light); color: var(--secondary); }
         nav { background: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
         .logo { font-family: 'Playfair Display', serif; font-weight: 700; color: var(--primary); font-size: 1.2rem; }
-        .hero { height: 40vh; background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=1200'); background-size: cover; background-position: center; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; text-align: center; }
+        .hero { height: 40vh; background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=1200'); background-size: cover; background-position: center; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; text-align: center; padding: 20px; }
         .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
         .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 25px; }
         .product-card { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); cursor: pointer; }
-        .img-container { height: 320px; background: #eee; overflow: hidden; }
+        .img-container { height: 320px; overflow: hidden; background: #eee; }
         .img-container img { width: 100%; height: 100%; object-fit: cover; }
         .slider-box { position: relative; width: 100%; height: 400px; background: #000; overflow: hidden; }
         .slider-img { width: 100%; height: 100%; object-fit: contain; display: none; }
         .slider-img.active { display: block; }
-        .modal-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.9); display: none; justify-content: center; align-items: center; z-index: 3000; }
-        .modal-card { background: white; width: 95%; max-width: 900px; border-radius: 20px; display: grid; grid-template-columns: 1fr 1fr; overflow: hidden; position: relative; }
+        .modal-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.9); display: none; justify-content: center; align-items: center; z-index: 3000; padding: 15px; }
+        .modal-card { background: white; width: 100%; max-width: 900px; border-radius: 20px; display: grid; grid-template-columns: 1fr 1fr; overflow: hidden; position: relative; }
         .btn-main { background: var(--secondary); color: white; padding: 14px; border-radius: 10px; width: 100%; cursor: pointer; border: none; font-weight: 600; margin-top: 10px; text-decoration: none; display: block; text-align: center; }
-        .admin-section { background: white; padding: 30px; border-radius: 15px; border: 3px dashed var(--primary); display: none; margin-bottom: 20px; }
-        @media (max-width: 768px) { .modal-card { grid-template-columns: 1fr; max-height: 90vh; overflow-y: auto; } }
+        .admin-section { background: white; padding: 30px; border-radius: 15px; border: 3px dashed var(--primary); display: none; margin: 20px 0; }
+        @media (max-width: 768px) { .modal-card { grid-template-columns: 1fr; max-height: 90vh; overflow-y: auto; } .slider-box { height: 300px; } }
     </style>
 </head>
 <body>
 
 <nav>
     <div class="logo">TRIPURA VASTRA</div>
-    <div id="status" style="font-size: 0.8rem; color: #888;">☁️ Connecting...</div>
+    <div id="cloud-status" style="font-size: 0.8rem; color: #888;">☁️ Connecting...</div>
 </nav>
 
 <section class="hero">
@@ -47,7 +48,7 @@
 
 <div class="container">
     <div id="adminPanel" class="admin-section">
-        <h3 style="text-align:center;">Owner: Add Product to Cloud</h3>
+        <h3>Owner: Add Product to Cloud</h3>
         <form id="productForm">
             <input type="text" id="pName" placeholder="Product Name" required style="width:100%; padding:10px; margin:5px 0;">
             <input type="number" id="pPrice" placeholder="Price (₹)" required style="width:100%; padding:10px; margin:5px 0;">
@@ -73,24 +74,25 @@
         </div>
         <div style="padding:30px;">
             <h2 id="detName"></h2>
-            <p id="detPrice" style="color:var(--primary); font-size:1.5rem; font-weight:bold;"></p>
-            <a id="waLink" href="#" target="_blank" class="btn-main" style="background:var(--success)">Buy on WhatsApp</a>
+            <p id="detPrice" style="color:var(--primary); font-size:1.8rem; font-weight:bold; margin:10px 0;"></p>
+            <a id="waLink" href="#" target="_blank" class="btn-main" style="background:var(--success)">Chat on WhatsApp</a>
             <button class="btn-main" onclick="closeDetails()" style="background:#ff4757">GO BACK</button>
         </div>
     </div>
 </div>
 
-<footer style="text-align:center; padding:60px 20px; color:#888;">
+<footer style="text-align:center; padding:40px; color:#888;">
     <p onclick="adminLogin()">Owner Login</p>
 </footer>
 
 <script>
+    // --- PASTE YOUR FIREBASE CONFIG HERE ---
     const firebaseConfig = {
         apiKey: "YOUR_API_KEY",
         authDomain: "YOUR_PROJECT.firebaseapp.com",
         projectId: "YOUR_PROJECT_ID",
         storageBucket: "YOUR_PROJECT.appspot.com",
-        messagingSenderId: "YOUR_SENDER_ID",
+        messagingSenderId: "YOUR_ID",
         appId: "YOUR_APP_ID"
     };
 
@@ -101,16 +103,18 @@
     let products = [];
     let currentSlide = 0;
 
+    // Load Data Globally
     db.collection("products").orderBy("createdAt", "desc").onSnapshot(snap => {
         products = snap.docs.map(doc => ({id: doc.id, ...doc.data()}));
         render();
-        document.getElementById('status').innerText = "☁️ Global Cloud Connected";
+        document.getElementById('cloud-status').innerText = "☁️ Global Cloud Connected";
     });
 
+    // Upload Logic
     document.getElementById('productForm').onsubmit = async (e) => {
         e.preventDefault();
         const btn = document.getElementById('upBtn');
-        btn.innerText = "Uploading Photos..."; btn.disabled = true;
+        btn.innerText = "Uploading to Cloud..."; btn.disabled = true;
         
         const files = document.getElementById('pFiles').files;
         const urls = [];
@@ -130,7 +134,7 @@
         });
 
         btn.innerText = "Upload to Cloud"; btn.disabled = false;
-        e.target.reset(); alert("Successful! This product is now live on every device.");
+        e.target.reset(); alert("Successful! Product is now live on all devices.");
     };
 
     function render() {
@@ -158,7 +162,7 @@
         currentSlide = 0;
         document.getElementById('detName').innerText = p.name;
         document.getElementById('detPrice').innerText = "₹" + p.price;
-        document.getElementById('waLink').href = `https://wa.me/919863653392?text=I want to buy: ${p.name}`;
+        document.getElementById('waLink').href = `https://wa.me/919863653392?text=Buy: ${p.name}`;
         document.getElementById('detailsOverlay').style.display = 'flex';
     }
 
