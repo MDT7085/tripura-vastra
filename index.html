@@ -1,1 +1,67 @@
+// ... [Keep Firebase Config at the top] ...
 
+    // Improved Upload Logic with Progress Tracking
+    document.getElementById('uploadForm').onsubmit = async (e) => {
+        e.preventDefault();
+        const btn = document.getElementById('upBtn');
+        const files = document.getElementById('photos').files;
+        
+        if (files.length === 0) return alert("Please select photos first!");
+
+        try {
+            btn.disabled = true;
+            const urls = [];
+
+            for (let i = 0; i < files.length; i++) {
+                const f = files[i];
+                // Show progress in the button
+                btn.innerText = `Uploading Photo ${i+1} of ${files.length}...`;
+                
+                const fileName = `${Date.now()}_${f.name}`;
+                const ref = storage.ref().child(`products/${fileName}`);
+                
+                // Start the upload task
+                const uploadTask = ref.put(f);
+
+                // This part waits for the upload to actually finish
+                await new Promise((resolve, reject) => {
+                    uploadTask.on('state_changed', 
+                        (snapshot) => {
+                            // You can see the percentage here if you check the console
+                            let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                            console.log('Upload is ' + progress + '% done');
+                        }, 
+                        (error) => {
+                            console.error("Upload Error:", error);
+                            reject(error);
+                        }, 
+                        async () => {
+                            const downloadURL = await uploadTask.snapshot.ref.getDownloadURL();
+                            urls.push(downloadURL);
+                            resolve();
+                        }
+                    );
+                });
+            }
+
+            btn.innerText = "Saving to Database...";
+
+            // Save text details to Firestore
+            await db.collection("products").add({
+                name: document.getElementById('name').value,
+                price: document.getElementById('price').value,
+                category: document.getElementById('category').value,
+                images: urls,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+
+            alert("✅ Success! Product is now visible on all devices.");
+            e.target.reset();
+        } catch (err) {
+            console.error("Full Error details:", err);
+            alert("❌ Upload Failed: " + err.message + "\n\nCheck if your Firebase Rules are set to 'true' and your GitHub domain is authorized.");
+        } finally {
+            btn.innerText = "Upload to Global Shop";
+            btn.disabled = false;
+        }
+    };
