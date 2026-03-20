@@ -1,223 +1,140 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tiprasa Vhastra</title>
-
-<style>
-body {
-  margin:0;
-  font-family: 'Segoe UI', sans-serif;
-  background:#0a0a0a;
-  color:white;
-}
-
-header {
-  padding:15px;
-  text-align:center;
-  font-size:24px;
-  color:gold;
-  font-weight:bold;
-  position:sticky;
-  top:0;
-  background:#000;
-}
-
-.hero {
-  text-align:center;
-  padding:60px 20px;
-}
-
-.hero h1 {
-  font-size:32px;
-}
-
-button {
-  padding:10px 20px;
-  background:gold;
-  border:none;
-  cursor:pointer;
-  font-weight:bold;
-}
-
-.products {
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-  gap:20px;
-  padding:20px;
-}
-
-.card {
-  background:#111;
-  padding:10px;
-  border-radius:10px;
-  text-align:center;
-  transition:0.3s;
-}
-
-.card:hover {
-  transform:scale(1.05);
-}
-
-.card img {
-  width:100%;
-  border-radius:10px;
-}
-
-.cart {
-  position:fixed;
-  right:10px;
-  top:10px;
-  background:gold;
-  color:black;
-  padding:10px;
-  border-radius:50%;
-  cursor:pointer;
-}
-
-.cart-box {
-  position:fixed;
-  right:0;
-  top:0;
-  width:300px;
-  height:100%;
-  background:#111;
-  padding:20px;
-  display:none;
-  overflow:auto;
-}
-
-.admin {
-  position:fixed;
-  bottom:10px;
-  left:10px;
-  background:red;
-  padding:10px;
-  cursor:pointer;
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tripura Vhastra | Traditional Handloom</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .tripura-red { background-color: #800000; }
+        .tripura-text { color: #800000; }
+        #adminPanel { display: none; }
+    </style>
 </head>
+<body class="bg-gray-50 font-sans">
 
-<body>
+    <nav class="tripura-red text-white p-4 shadow-lg flex justify-between items-center sticky top-0 z-50">
+        <h1 class="text-2xl font-bold tracking-widest">TRIPURA VHASTRA</h1>
+        <div>
+            <button onclick="toggleAdmin()" class="bg-white text-maroon-800 px-3 py-1 rounded text-sm text-black font-bold">Admin Login</button>
+        </div>
+    </nav>
 
-<header>TIPRASA VHASTRA</header>
+    <div id="bannerDisplay" class="w-full h-64 bg-gray-300 overflow-hidden flex items-center justify-center">
+        <img src="https://images.unsplash.com/photo-1610116303244-6239f81346d2?auto=format&fit=crop&q=80&w=1470" class="w-full h-full object-cover" alt="Banner">
+    </div>
 
-<div class="cart" onclick="toggleCart()">🛒 <span id="count">0</span></div>
+    <div id="adminPanel" class="max-w-4xl mx-auto p-6 bg-white shadow-xl my-6 rounded-lg border-2 border-red-800">
+        <h2 class="text-xl font-bold mb-4">Admin Management Panel</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <input type="text" id="pName" placeholder="Product Name (e.g. Traditional Rignai)" class="border p-2 rounded">
+            <input type="number" id="pPrice" placeholder="Price (INR)" class="border p-2 rounded">
+            <div class="col-span-2">
+                <label class="block text-sm font-bold mb-1">Upload Product Images (Select multiple):</label>
+                <input type="file" id="pImages" multiple accept="image/*" class="border p-2 w-full rounded">
+            </div>
+            <button onclick="addProduct()" class="tripura-red text-white p-3 rounded font-bold hover:bg-red-900">Add Product to Store</button>
+        </div>
+    </div>
 
-<div class="hero">
-<h1>Wear Your Roots. Rule Your Style.</h1>
-</div>
+    <div class="max-w-6xl mx-auto p-6">
+        <h2 class="text-3xl font-serif text-center my-8 tripura-text border-b-2 border-red-800 inline-block pb-2">Our Collection</h2>
+        <div id="productGrid" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            </div>
+    </div>
 
-<div class="products" id="products"></div>
+    <a href="https://wa.me/9863653392" target="_blank" class="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-2xl hover:scale-110 transition-transform z-50">
+        <i class="fab fa-whatsapp text-3xl"></i>
+    </a>
 
-<div class="cart-box" id="cartBox">
-<h2>Your Cart</h2>
-<div id="cartItems"></div>
-<button onclick="checkout()">Checkout</button>
-</div>
+    <footer class="bg-gray-900 text-white text-center p-10 mt-20">
+        <p class="text-lg">© 2024 Tripura Vhastra - Preserving Heritage</p>
+        <p class="text-gray-400 mt-2 tracking-widest uppercase text-sm">Website Designed by **MATINDRA B TRIPURA**</p>
+    </footer>
 
-<div class="admin" onclick="adminPanel()">Admin</div>
+    <script>
+        let products = JSON.parse(localStorage.getItem('tripura_products')) || [];
 
-<script>
+        function toggleAdmin() {
+            const pass = prompt("Enter Admin Password:");
+            if (pass === "1234") { // Change your password here
+                document.getElementById('adminPanel').style.display = 'block';
+                alert("Login Successful");
+            } else {
+                alert("Wrong Password");
+            }
+        }
 
-let products = [
-  {
-    name:"Tribal T-Shirt",
-    price:799,
-    img:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab"
-  },
-  {
-    name:"Black Hoodie",
-    price:1499,
-    img:"https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf"
-  },
-  {
-    name:"Minimal Tee",
-    price:699,
-    img:"https://images.unsplash.com/photo-1583743814966-8936f37f4678"
-  }
-];
+        function addProduct() {
+            const name = document.getElementById('pName').value;
+            const price = document.getElementById('pPrice').value;
+            const files = document.getElementById('pImages').files;
+            
+            if(!name || !price || files.length === 0) return alert("Please fill all details");
 
-let cart = [];
+            // Convert images to Base64 to store in browser
+            const reader = new FileReader();
+            reader.readAsDataURL(files[0]);
+            reader.onload = function () {
+                const newProduct = {
+                    id: Date.now(),
+                    name: name,
+                    price: price,
+                    image: reader.result
+                };
+                products.push(newProduct);
+                localStorage.setItem('tripura_products', JSON.stringify(products));
+                renderProducts();
+                clearInputs();
+            };
+        }
 
-function displayProducts(){
-  let container = document.getElementById("products");
-  container.innerHTML="";
-  products.forEach((p,i)=>{
-    container.innerHTML+=`
-    <div class="card">
-      <img src="${p.img}">
-      <h3>${p.name}</h3>
-      <p>₹${p.price}</p>
-      <button onclick="addToCart(${i})">Add to Cart</button>
-    </div>`;
-  });
-}
+        function deleteProduct(id) {
+            products = products.filter(p => p.id !== id);
+            localStorage.setItem('tripura_products', JSON.stringify(products));
+            renderProducts();
+        }
 
-function addToCart(i){
-  cart.push(products[i]);
-  document.getElementById("count").innerText = cart.length;
-  renderCart();
-}
+        function updatePrice(id) {
+            const newPrice = prompt("Enter new price:");
+            if (newPrice) {
+                const index = products.findIndex(p => p.id === id);
+                products[index].price = newPrice;
+                localStorage.setItem('tripura_products', JSON.stringify(products));
+                renderProducts();
+            }
+        }
 
-function toggleCart(){
-  let box=document.getElementById("cartBox");
-  box.style.display = box.style.display==="block"?"none":"block";
-}
+        function renderProducts() {
+            const grid = document.getElementById('productGrid');
+            grid.innerHTML = '';
+            products.forEach(p => {
+                grid.innerHTML += `
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden border hover:shadow-xl transition">
+                        <img src="${p.image}" class="w-full h-64 object-cover">
+                        <div class="p-4">
+                            <h3 class="font-bold text-xl">${p.name}</h3>
+                            <p class="text-red-800 font-bold text-lg">₹${p.price}</p>
+                            <div class="flex gap-2 mt-4">
+                                <button onclick="window.open('https://wa.me/9863653392?text=I want to buy ${p.name}')" class="bg-green-600 text-white flex-1 py-2 rounded">Buy Now</button>
+                                <button onclick="updatePrice(${p.id})" class="bg-gray-200 p-2 rounded text-xs">Edit Price</button>
+                                <button onclick="deleteProduct(${p.id})" class="bg-red-100 text-red-600 p-2 rounded text-xs">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
 
-function renderCart(){
-  let items=document.getElementById("cartItems");
-  items.innerHTML="";
-  cart.forEach(item=>{
-    items.innerHTML+=`<p>${item.name} - ₹${item.price}</p>`;
-  });
-}
+        function clearInputs() {
+            document.getElementById('pName').value = '';
+            document.getElementById('pPrice').value = '';
+            document.getElementById('pImages').value = '';
+        }
 
-function checkout(){
-  alert("Demo checkout. Use Razorpay/Stripe for real payments.");
-}
-
-function adminPanel(){
-  let name=prompt("Product name:");
-  let price=prompt("Price:");
-  let img=prompt("Image URL:");
-  if(name && price && img){
-    products.push({name,price,img});
-    displayProducts();
-  }
-}
-
-displayProducts();
-
-</script>
-
+        // Initial Load
+        renderProducts();
+    </script>
 </body>
 </html>
-<!-- WhatsApp Button -->
-<a href="https://wa.me/919863653392?text=Hello%20I%20want%20to%20order%20from%20Tiprasa%20Vhastra"
-   class="whatsapp"
-   target="_blank">
-   💬
-</a>
-
-<style>
-.whatsapp {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background: #25D366;
-  color: white;
-  font-size: 24px;
-  padding: 15px;
-  border-radius: 50%;
-  text-decoration: none;
-  box-shadow: 0 0 10px rgba(0,0,0,0.5);
-  z-index: 1000;
-  transition: 0.3s;
-}
-
-.whatsapp:hover {
-  transform: scale(1.1);
-}
-</style>
