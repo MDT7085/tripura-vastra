@@ -1,208 +1,223 @@
-
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyDZ_t-4V62qCra2FOlcIiD3gyI8ZVHn3rs",
-  authDomain: "tripura-vastra.firebaseapp.com",
-  projectId: "tripura-vastra",
-  storageBucket: "tripura-vastra.firebasestorage.app",
-  messagingSenderId: "325253747641",
-  appId: "1:325253747641:web:114f301bf126b7fb5bdc68",
-  measurementId: "G-K4LYG4Q93H"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tripura Vastra | Global Shop</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tiprasa Vhastra</title>
 
-    <style>
-        /* Keeping your beautiful design from index (19).html */
-        :root { --primary: #d63031; --secondary: #2d3436; --success: #25D366; --upi-blue: #0971b8; --light: #f9f9f9; }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Poppins', sans-serif; background-color: var(--light); color: var(--secondary); }
-        nav { background: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .logo { font-family: 'Playfair Display', serif; font-weight: 700; color: var(--primary); font-size: 1.2rem; }
-        .hero { height: 40vh; background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=1200'); background-size: cover; background-position: center; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; text-align: center; padding: 20px; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 25px; }
-        .product-card { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); cursor: pointer; }
-        .img-container { height: 320px; overflow: hidden; background: #eee; }
-        .img-container img { width: 100%; height: 100%; object-fit: cover; }
-        .slider-box { position: relative; width: 100%; height: 400px; background: #000; overflow: hidden; }
-        .slider-img { width: 100%; height: 100%; object-fit: contain; display: none; }
-        .slider-img.active { display: block; }
-        .modal-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.9); display: none; justify-content: center; align-items: center; z-index: 3000; padding: 15px; }
-        .modal-card { background: white; width: 100%; max-width: 900px; border-radius: 20px; display: grid; grid-template-columns: 1fr 1fr; overflow: hidden; position: relative; }
-        .btn-main { background: var(--secondary); color: white; padding: 14px; border-radius: 10px; width: 100%; cursor: pointer; border: none; font-weight: 600; margin-top: 10px; text-decoration: none; display: block; text-align: center; }
-        .admin-section { background: white; padding: 30px; border-radius: 15px; border: 3px dashed var(--primary); display: none; margin: 20px 0; }
-        @media (max-width: 768px) { .modal-card { grid-template-columns: 1fr; max-height: 90vh; overflow-y: auto; } .slider-box { height: 300px; } }
-    </style>
+<style>
+body {
+  margin:0;
+  font-family: 'Segoe UI', sans-serif;
+  background:#0a0a0a;
+  color:white;
+}
+
+header {
+  padding:15px;
+  text-align:center;
+  font-size:24px;
+  color:gold;
+  font-weight:bold;
+  position:sticky;
+  top:0;
+  background:#000;
+}
+
+.hero {
+  text-align:center;
+  padding:60px 20px;
+}
+
+.hero h1 {
+  font-size:32px;
+}
+
+button {
+  padding:10px 20px;
+  background:gold;
+  border:none;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+.products {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:20px;
+  padding:20px;
+}
+
+.card {
+  background:#111;
+  padding:10px;
+  border-radius:10px;
+  text-align:center;
+  transition:0.3s;
+}
+
+.card:hover {
+  transform:scale(1.05);
+}
+
+.card img {
+  width:100%;
+  border-radius:10px;
+}
+
+.cart {
+  position:fixed;
+  right:10px;
+  top:10px;
+  background:gold;
+  color:black;
+  padding:10px;
+  border-radius:50%;
+  cursor:pointer;
+}
+
+.cart-box {
+  position:fixed;
+  right:0;
+  top:0;
+  width:300px;
+  height:100%;
+  background:#111;
+  padding:20px;
+  display:none;
+  overflow:auto;
+}
+
+.admin {
+  position:fixed;
+  bottom:10px;
+  left:10px;
+  background:red;
+  padding:10px;
+  cursor:pointer;
+}
+</style>
 </head>
+
 <body>
 
-<nav>
-    <div class="logo">TRIPURA VASTRA</div>
-    <div id="cloud-status" style="font-size: 0.8rem; color: #888;">☁️ Connecting...</div>
-</nav>
+<header>TIPRASA VHASTRA</header>
 
-<section class="hero">
-    <h1>Tripura Vastra</h1>
-    <p>(Tiprasa Kanmung-Chumung)</p>
-</section>
+<div class="cart" onclick="toggleCart()">🛒 <span id="count">0</span></div>
 
-<div class="container">
-    <div id="adminPanel" class="admin-section">
-        <h3>Owner: Add Product to Cloud</h3>
-        <form id="productForm">
-            <input type="text" id="pName" placeholder="Product Name" required style="width:100%; padding:10px; margin:5px 0;">
-            <input type="number" id="pPrice" placeholder="Price (₹)" required style="width:100%; padding:10px; margin:5px 0;">
-            <select id="pCat" style="width:100%; padding:10px; margin:5px 0;">
-                <option value="Tripura Rignai">Tripura Rignai</option>
-                <option value="Debbarma Rignai">Debbarma Rignai</option>
-            </select>
-            <input type="file" id="pFiles" accept="image/*" multiple required style="margin:10px 0;">
-            <button type="submit" id="upBtn" class="btn-main" style="background:var(--primary)">Upload to Cloud</button>
-        </form>
-    </div>
-
-    <div id="productGrid" class="product-grid"></div>
+<div class="hero">
+<h1>Wear Your Roots. Rule Your Style.</h1>
 </div>
 
-<div id="detailsOverlay" class="modal-overlay" onclick="closeDetails()">
-    <div class="modal-card" onclick="event.stopPropagation()">
-        <div class="slider-box" id="sliderContainer">
-            <div style="position:absolute; top:50%; width:100%; display:flex; justify-content:space-between; transform:translateY(-50%); z-index:10;">
-                <button onclick="changeSlide(-1)" style="background:rgba(0,0,0,0.5); color:white; border:none; padding:15px; cursor:pointer;">&#10094;</button>
-                <button onclick="changeSlide(1)" style="background:rgba(0,0,0,0.5); color:white; border:none; padding:15px; cursor:pointer;">&#10095;</button>
-            </div>
-        </div>
-        <div style="padding:30px;">
-            <h2 id="detName"></h2>
-            <p id="detPrice" style="color:var(--primary); font-size:1.8rem; font-weight:bold; margin:10px 0;"></p>
-            <a id="waLink" href="#" target="_blank" class="btn-main" style="background:var(--success)">Chat on WhatsApp</a>
-            <button class="btn-main" onclick="closeDetails()" style="background:#ff4757">GO BACK</button>
-        </div>
-    </div>
+<div class="products" id="products"></div>
+
+<div class="cart-box" id="cartBox">
+<h2>Your Cart</h2>
+<div id="cartItems"></div>
+<button onclick="checkout()">Checkout</button>
 </div>
 
-<footer style="text-align:center; padding:40px; color:#888;">
-    <p onclick="adminLogin()">Owner Login</p>
-</footer>
+<div class="admin" onclick="adminPanel()">Admin</div>
 
 <script>
-    // --- PASTE YOUR FIREBASE CONFIG HERE ---
-    const firebaseConfig = {
-        apiKey: "YOUR_API_KEY",
-        authDomain: "YOUR_PROJECT.firebaseapp.com",
-        projectId: "YOUR_PROJECT_ID",
-        storageBucket: "YOUR_PROJECT.appspot.com",
-        messagingSenderId: "YOUR_ID",
-        appId: "YOUR_APP_ID"
-    };
 
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-    const storage = firebase.storage();
+let products = [
+  {
+    name:"Tribal T-Shirt",
+    price:799,
+    img:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab"
+  },
+  {
+    name:"Black Hoodie",
+    price:1499,
+    img:"https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf"
+  },
+  {
+    name:"Minimal Tee",
+    price:699,
+    img:"https://images.unsplash.com/photo-1583743814966-8936f37f4678"
+  }
+];
 
-    let products = [];
-    let currentSlide = 0;
+let cart = [];
 
-    // Load Data Globally
-    db.collection("products").orderBy("createdAt", "desc").onSnapshot(snap => {
-        products = snap.docs.map(doc => ({id: doc.id, ...doc.data()}));
-        render();
-        document.getElementById('cloud-status').innerText = "☁️ Global Cloud Connected";
-    });
+function displayProducts(){
+  let container = document.getElementById("products");
+  container.innerHTML="";
+  products.forEach((p,i)=>{
+    container.innerHTML+=`
+    <div class="card">
+      <img src="${p.img}">
+      <h3>${p.name}</h3>
+      <p>₹${p.price}</p>
+      <button onclick="addToCart(${i})">Add to Cart</button>
+    </div>`;
+  });
+}
 
-    // Upload Logic
-    document.getElementById('productForm').onsubmit = async (e) => {
-        e.preventDefault();
-        const btn = document.getElementById('upBtn');
-        btn.innerText = "Uploading to Cloud..."; btn.disabled = true;
-        
-        const files = document.getElementById('pFiles').files;
-        const urls = [];
+function addToCart(i){
+  cart.push(products[i]);
+  document.getElementById("count").innerText = cart.length;
+  renderCart();
+}
 
-        for(let file of files) {
-            const ref = storage.ref(`products/${Date.now()}_${file.name}`);
-            await ref.put(file);
-            urls.push(await ref.getDownloadURL());
-        }
+function toggleCart(){
+  let box=document.getElementById("cartBox");
+  box.style.display = box.style.display==="block"?"none":"block";
+}
 
-        await db.collection("products").add({
-            name: document.getElementById('pName').value,
-            price: document.getElementById('pPrice').value,
-            cat: document.getElementById('pCat').value,
-            images: urls,
-            createdAt: firebase.firestore.FieldValue.serverTimestamp()
-        });
+function renderCart(){
+  let items=document.getElementById("cartItems");
+  items.innerHTML="";
+  cart.forEach(item=>{
+    items.innerHTML+=`<p>${item.name} - ₹${item.price}</p>`;
+  });
+}
 
-        btn.innerText = "Upload to Cloud"; btn.disabled = false;
-        e.target.reset(); alert("Successful! Product is now live on all devices.");
-    };
+function checkout(){
+  alert("Demo checkout. Use Razorpay/Stripe for real payments.");
+}
 
-    function render() {
-        const grid = document.getElementById('productGrid');
-        grid.innerHTML = products.map(p => `
-            <div class="product-card" onclick="viewProduct('${p.id}')">
-                <div class="img-container"><img src="${p.images[0]}"></div>
-                <div style="padding:15px; text-align:center;">
-                    <h3>${p.name}</h3>
-                    <p style="color:var(--primary); font-weight:bold;">₹${p.price}</p>
-                </div>
-            </div>`).join('');
-    }
+function adminPanel(){
+  let name=prompt("Product name:");
+  let price=prompt("Price:");
+  let img=prompt("Image URL:");
+  if(name && price && img){
+    products.push({name,price,img});
+    displayProducts();
+  }
+}
 
-    function viewProduct(id) {
-        const p = products.find(item => item.id === id);
-        const slider = document.getElementById('sliderContainer');
-        slider.querySelectorAll('.slider-img').forEach(img => img.remove());
-        p.images.forEach((url, i) => {
-            const img = document.createElement('img');
-            img.src = url;
-            img.className = 'slider-img' + (i === 0 ? ' active' : '');
-            slider.appendChild(img);
-        });
-        currentSlide = 0;
-        document.getElementById('detName').innerText = p.name;
-        document.getElementById('detPrice').innerText = "₹" + p.price;
-        document.getElementById('waLink').href = `https://wa.me/919863653392?text=Buy: ${p.name}`;
-        document.getElementById('detailsOverlay').style.display = 'flex';
-    }
+displayProducts();
 
-    function changeSlide(n) {
-        const slides = document.querySelectorAll('.slider-img');
-        if(slides.length < 2) return;
-        slides[currentSlide].classList.remove('active');
-        currentSlide = (currentSlide + n + slides.length) % slides.length;
-        slides[currentSlide].classList.add('active');
-    }
-
-    function closeDetails() { document.getElementById('detailsOverlay').style.display = 'none'; }
-    function adminLogin() { if(prompt("Pass:") === "admin") document.getElementById('adminPanel').style.display = 'block'; }
 </script>
+
 </body>
 </html>
+<!-- WhatsApp Button -->
+<a href="https://wa.me/919863653392?text=Hello%20I%20want%20to%20order%20from%20Tiprasa%20Vhastra"
+   class="whatsapp"
+   target="_blank">
+   💬
+</a>
+
+<style>
+.whatsapp {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #25D366;
+  color: white;
+  font-size: 24px;
+  padding: 15px;
+  border-radius: 50%;
+  text-decoration: none;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  z-index: 1000;
+  transition: 0.3s;
+}
+
+.whatsapp:hover {
+  transform: scale(1.1);
+}
+</style>
