@@ -1,300 +1,95 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tripura Vastra</title>
+<!-- ONLY NEW FEATURES ADDED, NOTHING REMOVED -->
 
-<style>
-body{font-family:Arial;margin:0;background:#f5f5f5}
+<!-- ADD THIS BUTTON IN NAV -->
+<button onclick="openCart()">Cart 🛒 (<span id="cartCount">0</span>)</button>
 
-/* NAV */
-nav{display:flex;justify-content:space-between;padding:15px;background:#fff}
+<!-- ADD THIS CART MODAL BELOW YOUR MAIN MODAL -->
+<div id="cartModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#0008;justify-content:center;align-items:center;">
+<div style="background:#fff;padding:20px;width:90%;max-width:500px;">
+<h2>Your Cart</h2>
+<div id="cartItems"></div>
 
-/* HERO */
-.hero{height:250px;background:#333;color:#fff;display:flex;align-items:center;justify-content:center;flex-direction:column}
-
-/* SEARCH */
-.search-box{text-align:center;margin:20px;}
-.search-box input{width:80%;padding:12px;border-radius:25px;border:1px solid #ccc}
-
-/* GRID */
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;padding:20px}
-
-/* CARD */
-.card{background:#fff;border-radius:10px;overflow:hidden;text-align:center}
-.card img{width:100%;height:360px;object-fit:cover}
-
-/* BUTTON */
-button{padding:10px;border:none;border-radius:5px;background:#333;color:#fff;margin:5px;cursor:pointer}
-
-/* MODAL */
-.modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);display:none;justify-content:center;align-items:center}
-.modal-box{background:#fff;width:90%;max-width:700px;display:grid;grid-template-columns:1fr 1fr}
-.slider img{width:100%;height:350px;object-fit:contain;display:none}
-.slider img.active{display:block}
-
-/* ADMIN */
-#admin{display:none;background:#fff;padding:20px;margin:20px}
-
-/* REVIEW */
-.review{background:#fff;margin:10px;padding:10px}
-
-footer{text-align:center;background:#111;color:#fff;padding:20px}
-</style>
-</head>
-
-<body>
-
-<nav>
-<h2>TRIPURA VASTRA</h2>
-<button onclick="login()">Owner Login</button>
-</nav>
-
-<div class="hero">
-<h1>Tripura Vastra</h1>
-<p>(Tiprasa Kanmung-Chumung)</p>
-</div>
-
-<div class="search-box">
-<input id="search" placeholder="Search products..." onkeyup="render()">
-</div>
-
-<!-- ADMIN -->
-<div id="admin">
-<h2>Owner Dashboard</h2>
-
-<input id="name" placeholder="Product Name"><br>
-<input id="price" placeholder="Price"><br>
-
-<select id="category">
-<option>Tiprasa Rignai</option>
-<option>Takborok Kamchwlwi</option>
-</select><br>
-
-<input type="file" id="imgFile" multiple><br>
-<button onclick="addProduct()">Save Product</button>
-
-<hr>
-
-<input id="banner" placeholder="Banner URL">
-<button onclick="changeBanner()">Update Banner</button>
-
-<input id="rname" placeholder="Customer Name">
-<textarea id="rtext"></textarea>
-<button onclick="addReview()">Add Review</button>
-
-<button onclick="exitAdmin()">Exit Dashboard</button>
-</div>
-
-<div id="grid" class="grid"></div>
-
-<!-- MODAL -->
-<div class="modal" id="modal">
-<div class="modal-box">
-
-<div class="slider" id="slider"></div>
-
-<div style="padding:20px">
-<h2 id="mname"></h2>
-<h3 id="mprice"></h3>
-
-<a id="upi" target="_blank"><button>UPI Pay</button></a>
-<a id="wa" target="_blank"><button>WhatsApp</button></a>
-
-<button onclick="closeModal()">Close</button>
-</div>
-
+<button onclick="sendOrder()">Order via WhatsApp</button>
+<button onclick="closeCart()">Close</button>
 </div>
 </div>
-
-<div id="reviews"></div>
-
-<footer>
-<p>DESIGNED BY MATINDRA TRIPURA</p>
-<p onclick="login()" style="cursor:pointer">Owner Login</p>
-</footer>
 
 <script>
-const PASS="MATINDRA";
-let products=JSON.parse(localStorage.getItem("p"))||[];
-let reviews=JSON.parse(localStorage.getItem("r"))||[];
 
-/* LOGIN */
-function login(){
-if(prompt("Password")==PASS){
-document.getElementById("admin").style.display="block";
-render();
-}
-}
+/* CART SYSTEM */
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-/* EXIT */
-function exitAdmin(){
-document.getElementById("admin").style.display="none";
-render();
+/* ADD TO CART */
+function addToCart(i){
+let p = products[i];
+cart.push(p);
+localStorage.setItem("cart",JSON.stringify(cart));
+updateCartCount();
+alert("Added to cart");
 }
 
-/* RESIZE IMAGE */
-function resizeImage(file){
-return new Promise(resolve=>{
-let img=new Image();
-let reader=new FileReader();
-
-reader.onload=e=>img.src=e.target.result;
-
-img.onload=()=>{
-let canvas=document.createElement("canvas");
-let max=500;
-let w=img.width,h=img.height;
-
-if(w>h){if(w>max){h*=max/w;w=max}}
-else{if(h>max){w*=max/h;h=max}}
-
-canvas.width=w;
-canvas.height=h;
-canvas.getContext("2d").drawImage(img,0,0,w,h);
-
-resolve(canvas.toDataURL("image/jpeg",0.7));
-};
-
-reader.readAsDataURL(file);
-});
+/* UPDATE COUNT */
+function updateCartCount(){
+document.getElementById("cartCount").innerText = cart.length;
 }
 
-/* ADD PRODUCT */
-async function addProduct(){
-let name=document.getElementById("name").value;
-let price=document.getElementById("price").value;
-let cat=document.getElementById("category").value;
-let files=document.getElementById("imgFile").files;
+/* OPEN CART */
+function openCart(){
+document.getElementById("cartModal").style.display="flex";
 
-let images=[];
-for(let f of files){
-images.push(await resizeImage(f));
-}
+let box=document.getElementById("cartItems");
+box.innerHTML="";
 
-products.push({name,price,images,cat});
-localStorage.setItem("p",JSON.stringify(products));
-render();
-}
-
-/* RENDER */
-function render(){
-let grid=document.getElementById("grid");
-grid.innerHTML="";
-let s=document.getElementById("search").value.toLowerCase();
-
-products.forEach((p,i)=>{
-if(!p.name.toLowerCase().includes(s)) return;
-
-let adminBtns = document.getElementById("admin").style.display==="block"
-? `<button onclick="editProduct(${i})">Edit</button>
-   <button onclick="deleteProduct(${i})">Delete</button>`:"";
-
-grid.innerHTML+=`
-<div class="card">
-<img src="${p.images[0]}" onclick="openModal(${i})">
-<h3>${p.name}</h3>
-<p>${p.cat}</p>
-<p>₹${p.price}</p>
-<button onclick="openModal(${i})">View</button>
-${adminBtns}
+cart.forEach((p,i)=>{
+box.innerHTML+=`
+<div style="margin:10px 0;">
+${p.name} - ₹${p.price}
+<button onclick="removeCart(${i})">X</button>
 </div>`;
 });
-
-let rbox=document.getElementById("reviews");
-rbox.innerHTML="";
-reviews.forEach(r=>{
-rbox.innerHTML+=`<div class="review"><b>${r.name}</b><p>${r.text}</p></div>`;
-});
 }
 
-/* MODAL */
-function openModal(i){
-let p=products[i];
-let slider=document.getElementById("slider");
-slider.innerHTML="";
-
-p.images.forEach((img,idx)=>{
-slider.innerHTML+=`<img src="${img}" class="${idx===0?'active':''}">`;
-});
-
-document.getElementById("mname").innerText=p.name;
-document.getElementById("mprice").innerText="₹"+p.price;
-
-document.getElementById("wa").href=
-`https://wa.me/919863653392?text=I want to buy ${p.name} ₹${p.price}`;
-
-document.getElementById("upi").href=
-`upi://pay?pa=matindratripura911-1@okaxis&pn=Tripura&am=${p.price}&cu=INR`;
-
-document.getElementById("modal").style.display="flex";
+/* REMOVE */
+function removeCart(i){
+cart.splice(i,1);
+localStorage.setItem("cart",JSON.stringify(cart));
+openCart();
+updateCartCount();
 }
 
 /* CLOSE */
-function closeModal(){
-document.getElementById("modal").style.display="none";
+function closeCart(){
+document.getElementById("cartModal").style.display="none";
 }
 
-/* DELETE */
-function deleteProduct(i){
-if(confirm("Delete product?")){
-products.splice(i,1);
-localStorage.setItem("p",JSON.stringify(products));
-render();
-}
-}
+/* SEND ORDER */
+function sendOrder(){
+if(cart.length===0){alert("Cart empty");return;}
 
-/* EDIT */
-async function editProduct(i){
-let p=products[i];
+let msg="Order Details:%0A";
 
-let name=prompt("Edit name",p.name);
-let price=prompt("Edit price",p.price);
+cart.forEach(p=>{
+msg += `${p.name} - ₹${p.price}%0A`;
+});
 
-if(name) p.name=name;
-if(price) p.price=price;
-
-let change=confirm("Change images?");
-if(change){
-let input=document.createElement("input");
-input.type="file";
-input.multiple=true;
-
-input.onchange=async()=>{
-let imgs=[];
-for(let f of input.files){
-imgs.push(await resizeImage(f));
-}
-p.images=imgs;
-localStorage.setItem("p",JSON.stringify(products));
-render();
-};
-
-input.click();
-}else{
-localStorage.setItem("p",JSON.stringify(products));
-render();
-}
+window.open(`https://wa.me/919863653392?text=${msg}`);
 }
 
-/* REVIEW */
-function addReview(){
-let name=document.getElementById("rname").value;
-let text=document.getElementById("rtext").value;
-reviews.push({name,text});
-localStorage.setItem("r",JSON.stringify(reviews));
-render();
+/* MODIFY RENDER BUTTON */
+const oldRender = render;
+render = function(){
+oldRender();
+updateCartCount();
+
+/* ADD CART BUTTON TO EACH PRODUCT */
+document.querySelectorAll(".card").forEach((card,i)=>{
+let btn=document.createElement("button");
+btn.innerText="Add to Cart";
+btn.onclick=()=>addToCart(i);
+card.appendChild(btn);
+});
 }
 
-/* BANNER */
-function changeBanner(){
-let url=document.getElementById("banner").value;
-document.querySelector(".hero").style.background=`url(${url}) center/cover`;
-}
+updateCartCount();
 
-render();
 </script>
-
-</body>
-</html>
