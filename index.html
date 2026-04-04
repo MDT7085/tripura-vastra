@@ -6,68 +6,68 @@
 <title>Tripura Vastra</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
 <style>
 :root{
---primary:#ff6b6b;
---dark:#2c3e50;
+--primary:#d63031;
+--dark:#2d3436;
 --light:#f5f5f5;
 --white:#fff;
+--success:#25D366;
+--upi:#0971b8;
 }
+
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:Poppins;background:var(--light);}
 
 /* NAV */
-nav{display:flex;justify-content:space-between;padding:15px 25px;background:#fff;box-shadow:0 2px 10px rgba(0,0,0,0.1);}
-.logo{color:#c0392b;font-family:'Playfair Display';}
+nav{display:flex;justify-content:space-between;padding:15px;background:#fff;box-shadow:0 2px 10px rgba(0,0,0,0.1);}
+.logo{font-family:'Playfair Display';color:var(--primary);}
 
 /* HERO */
 .hero{
 height:250px;
-background:linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)),
-url('https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b');
+background:linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)),url('https://picsum.photos/1200/600');
 background-size:cover;
 display:flex;align-items:center;justify-content:center;flex-direction:column;color:#fff;
 }
 
 /* CATEGORY */
-.controls{background:#fff;margin:-40px auto 30px;width:90%;padding:15px;border-radius:15px;text-align:center;}
+.controls{background:#fff;margin:-40px auto 30px;width:90%;padding:20px;border-radius:15px;text-align:center;}
 .cat-btn{padding:8px 15px;border:none;border-radius:20px;margin:5px;background:#eee;}
 .cat-btn.active{background:var(--primary);color:#fff;}
 
 /* GRID */
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;padding:20px;}
-.card{background:#fff;border-radius:15px;overflow:hidden;text-align:center;box-shadow:0 4px 10px rgba(0,0,0,0.1);cursor:pointer;}
-.card img{width:100%;height:300px;object-fit:cover;}
+.card{background:#fff;border-radius:15px;overflow:hidden;text-align:center;box-shadow:0 4px 10px rgba(0,0,0,0.1);}
+.card img{width:100%;height:260px;object-fit:cover;}
 .price{color:var(--primary);font-weight:bold;}
-.btn{background:var(--dark);color:#fff;padding:12px;border:none;border-radius:8px;margin:10px;cursor:pointer;width:80%;}
+.btn{background:var(--dark);color:#fff;padding:10px;border:none;border-radius:8px;margin:5px;cursor:pointer}
 
 /* MODAL */
-.modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);display:none;align-items:center;justify-content:center;}
-.modal-box{background:#fff;display:grid;grid-template-columns:1fr 1fr;max-width:900px;width:90%;border-radius:15px;overflow:hidden;position:relative;}
-.slider img{width:100%;height:100%;object-fit:cover;display:none;}
+.modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);display:none;justify-content:center;align-items:center;}
+.modal-box{background:#fff;display:grid;grid-template-columns:1fr 1fr;max-width:700px;width:95%;border-radius:15px;overflow:hidden;position:relative;}
+.slider{height:350px;background:#000;}
+.slider img{width:100%;height:100%;object-fit:contain;display:none;}
 .slider img.active{display:block;}
 .modal-body{padding:20px;}
-.close{position:absolute;right:15px;top:10px;font-size:25px;cursor:pointer;}
 .nav-btn{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,0.5);color:#fff;border:none;padding:10px;cursor:pointer;}
 .prev{left:10px;} .next{right:10px;}
+.close{position:absolute;right:10px;top:10px;font-size:25px;cursor:pointer;}
 
-/* BUTTON COLORS */
-.upi{background:#3498db;}
-.wa{background:#2ecc71;}
-.back{background:#e74c3c;}
+.upi{background:var(--upi);}
+.wa{background:var(--success);}
+.back{background:#ff4757;}
 
 /* ADMIN */
 .admin{display:none;background:#fff;margin:40px auto;padding:30px;width:90%;border-radius:15px;border:2px dashed var(--primary);}
-.admin input,select,textarea{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:1px solid #ddd;}
+.admin input,textarea{width:100%;padding:10px;margin:8px 0}
 
-/* REVIEWS */
+/* REVIEW */
 .reviews{padding:40px;}
 .review-box{background:#fff;padding:15px;border-radius:10px;margin-top:10px;}
 
-/* FOOTER */
-footer{background:#1e2a38;color:#fff;text-align:center;padding:40px;margin-top:50px;}
+footer{background:#111;color:#fff;text-align:center;padding:40px;margin-top:40px;}
 </style>
 </head>
 
@@ -75,7 +75,7 @@ footer{background:#1e2a38;color:#fff;text-align:center;padding:40px;margin-top:5
 
 <nav>
 <div class="logo">TRIPURA VASTRA</div>
-<div><i class="fas fa-user"></i> Account</div>
+<div>Account</div>
 </nav>
 
 <section class="hero" id="hero">
@@ -85,41 +85,30 @@ footer{background:#1e2a38;color:#fff;text-align:center;padding:40px;margin-top:5
 
 <div class="controls">
 <button class="cat-btn active">All</button>
-<button class="cat-btn">Tripura Rignai</button>
-<button class="cat-btn">Debbarma Rignai</button>
-<button class="cat-btn">Reang Rignai</button>
 </div>
 
 <!-- ADMIN -->
 <div id="admin" class="admin">
 <h2>Owner Dashboard</h2>
 
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
-
-<div>
-<h3>Upload Product</h3>
 <input id="name" placeholder="Product Name">
-<input id="price" type="number" placeholder="Price">
+<input id="price" placeholder="Price">
 <input type="file" id="imgFile" multiple>
-<button class="btn" onclick="addProduct()">Save Product</button>
-</div>
 
-<div>
-<h3>Banner & Reviews</h3>
-<input id="banner" placeholder="Banner Image URL">
+<button class="btn" onclick="addProduct()">Save Product</button>
+
+<hr>
+
+<input id="banner" placeholder="Banner URL">
 <button class="btn" onclick="changeBanner()">Update Banner</button>
 
 <input id="rname" placeholder="Customer Name">
-<textarea id="rtext" placeholder="Review"></textarea>
+<textarea id="rtext"></textarea>
 <button class="btn wa" onclick="addReview()">Add Review</button>
-</div>
-
-</div>
 
 <button class="btn back" onclick="location.reload()">Exit</button>
 </div>
 
-<!-- PRODUCTS -->
 <div class="grid" id="grid"></div>
 
 <!-- MODAL -->
@@ -133,9 +122,9 @@ footer{background:#1e2a38;color:#fff;text-align:center;padding:40px;margin-top:5
 <h2 id="mname"></h2>
 <h3 id="mprice"></h3>
 
-<button class="btn upi">Pay via UPI</button>
-<button class="btn wa">WhatsApp</button>
-<button class="btn back" onclick="closeModal()">Go Back</button>
+<a id="upiBtn" class="btn upi">Pay via UPI</a>
+<a id="waBtn" target="_blank" class="btn wa">WhatsApp</a>
+<button class="btn back" onclick="closeModal()">Back</button>
 </div>
 
 <button class="nav-btn prev" onclick="changeSlide(-1)">❮</button>
@@ -144,70 +133,88 @@ footer{background:#1e2a38;color:#fff;text-align:center;padding:40px;margin-top:5
 </div>
 </div>
 
-<!-- REVIEWS -->
 <div class="reviews">
 <h2>Customer Reviews</h2>
 <div id="reviews"></div>
 </div>
 
 <footer>
-<h3>Tripura Vastra (Tiprasa Kanmung-Chumung)</h3>
-<p>DESIGNED BY MATINDRA TRIPURA</p>
-<p style="opacity:0.4;cursor:pointer;" onclick="login()">Owner Login</p>
+<h3>Tripura Vastra</h3>
+<p onclick="login()" style="cursor:pointer;opacity:0.5;">Owner Login</p>
 </footer>
 
 <script>
 const PASS="MATINDRA";
-
 let products=JSON.parse(localStorage.getItem("p"))||[];
 let reviews=JSON.parse(localStorage.getItem("r"))||[];
-
 let currentSlide=0;
 
 /* LOGIN */
 function login(){
-let p=prompt("Enter Password:");
-if(p===PASS){
+if(prompt("Password")==PASS){
 document.getElementById("admin").style.display="block";
+render();
 }
 }
 
-/* ADD PRODUCT (MULTIPLE IMAGE UPLOAD) */
-function addProduct(){
-const name=document.getElementById("name").value;
-const price=document.getElementById("price").value;
-const files=document.getElementById("imgFile").files;
+/* RESIZE */
+function resizeImage(file){
+return new Promise(resolve=>{
+let img=new Image();
+let reader=new FileReader();
 
-if(files.length===0){alert("Select images");return;}
+reader.onload=e=>img.src=e.target.result;
 
-let images=[],loaded=0;
+img.onload=()=>{
+let canvas=document.createElement("canvas");
+let max=500;
 
-Array.from(files).forEach(file=>{
-const reader=new FileReader();
-reader.onload=e=>{
-images.push(e.target.result);
-loaded++;
-if(loaded===files.length){
+let w=img.width,h=img.height;
+if(w>h){if(w>max){h*=max/w;w=max;}}
+else{if(h>max){w*=max/h;h=max;}}
+
+canvas.width=w;canvas.height=h;
+canvas.getContext("2d").drawImage(img,0,0,w,h);
+resolve(canvas.toDataURL("image/jpeg",0.7));
+};
+
+reader.readAsDataURL(file);
+});
+}
+
+/* ADD PRODUCT */
+async function addProduct(){
+let name=document.getElementById("name").value;
+let price=document.getElementById("price").value;
+let files=document.getElementById("imgFile").files;
+
+let images=[];
+for(let f of files){
+images.push(await resizeImage(f));
+}
+
 products.push({name,price,images});
 localStorage.setItem("p",JSON.stringify(products));
 render();
-}
-};
-reader.readAsDataURL(file);
-});
 }
 
 /* RENDER */
 function render(){
 let grid=document.getElementById("grid");
 grid.innerHTML="";
+
 products.forEach((p,i)=>{
+let adminBtns = document.getElementById("admin").style.display==="block"
+? `<button onclick="editProduct(${i})">Edit</button>
+   <button onclick="deleteProduct(${i})">Delete</button>`:"";
+
 grid.innerHTML+=`
-<div class="card" onclick="openModal(${i})">
-<img src="${p.images[0]}">
+<div class="card">
+<img src="${p.images[0]}" onclick="openModal(${i})">
 <h3>${p.name}</h3>
 <p class="price">₹${p.price}</p>
-<button class="btn">View Details</button>
+<button class="btn" onclick="openModal(${i})">View Details</button>
+${adminBtns}
 </div>`;
 });
 
@@ -228,11 +235,16 @@ p.images.forEach((img,index)=>{
 slider.innerHTML+=`<img src="${img}" class="${index===0?'active':''}">`;
 });
 
-currentSlide=0;
-
-document.getElementById("modal").style.display="flex";
 document.getElementById("mname").innerText=p.name;
 document.getElementById("mprice").innerText="₹"+p.price;
+
+document.getElementById("waBtn").href=
+`https://wa.me/919863653392?text=I want to buy ${p.name} ₹${p.price}`;
+
+document.getElementById("upiBtn").href=
+`upi://pay?pa=matindratripura911-1@okaxis&pn=Tripura&am=${p.price}&cu=INR`;
+
+document.getElementById("modal").style.display="flex";
 }
 
 /* SLIDER */
@@ -246,6 +258,24 @@ slides[currentSlide].classList.add("active");
 /* CLOSE */
 function closeModal(){
 document.getElementById("modal").style.display="none";
+}
+
+/* DELETE */
+function deleteProduct(i){
+if(confirm("Delete product?")){
+products.splice(i,1);
+localStorage.setItem("p",JSON.stringify(products));
+render();
+}
+}
+
+/* EDIT */
+async function editProduct(i){
+let p=products[i];
+p.name=prompt("Name",p.name);
+p.price=prompt("Price",p.price);
+localStorage.setItem("p",JSON.stringify(products));
+render();
 }
 
 /* REVIEW */
