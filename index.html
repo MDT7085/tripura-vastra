@@ -5,111 +5,87 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tripura Vastra</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-
 <style>
-:root{
---primary:#d63031;
---dark:#2d3436;
---light:#f5f5f5;
---white:#fff;
---success:#25D366;
---upi:#0971b8;
-}
-
-*{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:Poppins;background:var(--light);}
+body{font-family:Arial;margin:0;background:#f5f5f5}
 
 /* NAV */
-nav{display:flex;justify-content:space-between;padding:15px;background:#fff;box-shadow:0 2px 10px rgba(0,0,0,0.1);}
-.logo{font-family:'Playfair Display';color:var(--primary);}
+nav{display:flex;justify-content:space-between;padding:15px;background:#fff}
 
 /* HERO */
-.hero{
-height:250px;
-background:linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)),url('https://picsum.photos/1200/600');
-background-size:cover;
-display:flex;align-items:center;justify-content:center;flex-direction:column;color:#fff;
-}
+.hero{height:250px;background:#333;color:#fff;display:flex;align-items:center;justify-content:center;flex-direction:column}
 
-/* CATEGORY */
-.controls{background:#fff;margin:-40px auto 30px;width:90%;padding:20px;border-radius:15px;text-align:center;}
-.cat-btn{padding:8px 15px;border:none;border-radius:20px;margin:5px;background:#eee;}
-.cat-btn.active{background:var(--primary);color:#fff;}
+/* SEARCH */
+.search-box{text-align:center;margin:20px;}
+.search-box input{width:80%;padding:12px;border-radius:25px;border:1px solid #ccc}
 
 /* GRID */
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;padding:20px;}
-.card{background:#fff;border-radius:15px;overflow:hidden;text-align:center;box-shadow:0 4px 10px rgba(0,0,0,0.1);}
-.card img{width:100%;height:260px;object-fit:cover;}
-.price{color:var(--primary);font-weight:bold;}
-.btn{background:var(--dark);color:#fff;padding:10px;border:none;border-radius:8px;margin:5px;cursor:pointer}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;padding:20px}
+
+/* CARD */
+.card{background:#fff;border-radius:10px;overflow:hidden;text-align:center}
+.card img{width:100%;height:340px;object-fit:cover}
+
+/* BUTTON */
+button{padding:10px;border:none;border-radius:5px;background:#333;color:#fff;margin:5px;cursor:pointer}
 
 /* MODAL */
-.modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);display:none;justify-content:center;align-items:center;}
-.modal-box{background:#fff;display:grid;grid-template-columns:1fr 1fr;max-width:700px;width:95%;border-radius:15px;overflow:hidden;position:relative;}
-.slider{height:350px;background:#000;}
-.slider img{width:100%;height:100%;object-fit:contain;display:none;}
-.slider img.active{display:block;}
-.modal-body{padding:20px;}
-.nav-btn{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,0.5);color:#fff;border:none;padding:10px;cursor:pointer;}
-.prev{left:10px;} .next{right:10px;}
-.close{position:absolute;right:10px;top:10px;font-size:25px;cursor:pointer;}
-
-.upi{background:var(--upi);}
-.wa{background:var(--success);}
-.back{background:#ff4757;}
+.modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);display:none;justify-content:center;align-items:center}
+.modal-box{background:#fff;width:90%;max-width:700px;display:grid;grid-template-columns:1fr 1fr}
+.slider img{width:100%;height:350px;object-fit:contain;display:none}
+.slider img.active{display:block}
 
 /* ADMIN */
-.admin{display:none;background:#fff;margin:40px auto;padding:30px;width:90%;border-radius:15px;border:2px dashed var(--primary);}
-.admin input,textarea{width:100%;padding:10px;margin:8px 0}
+#admin{display:none;background:#fff;padding:20px;margin:20px}
 
 /* REVIEW */
-.reviews{padding:40px;}
-.review-box{background:#fff;padding:15px;border-radius:10px;margin-top:10px;}
+.review{background:#fff;margin:10px;padding:10px}
 
-footer{background:#111;color:#fff;text-align:center;padding:40px;margin-top:40px;}
+footer{text-align:center;background:#111;color:#fff;padding:20px}
 </style>
 </head>
 
 <body>
 
 <nav>
-<div class="logo">TRIPURA VASTRA</div>
-<div>Account</div>
+<h2>TRIPURA VASTRA</h2>
+<button onclick="login()">Owner Login</button>
 </nav>
 
-<section class="hero" id="hero">
+<div class="hero">
 <h1>Tripura Vastra</h1>
 <p>(Tiprasa Kanmung-Chumung)</p>
-</section>
+</div>
 
-<div class="controls">
-<button class="cat-btn active">All</button>
+<!-- SEARCH -->
+<div class="search-box">
+<input id="search" placeholder="Search products..." onkeyup="render()">
 </div>
 
 <!-- ADMIN -->
-<div id="admin" class="admin">
-<h2>Owner Dashboard</h2>
+<div id="admin">
+<input id="name" placeholder="Product Name"><br>
+<input id="price" placeholder="Price"><br>
 
-<input id="name" placeholder="Product Name">
-<input id="price" placeholder="Price">
-<input type="file" id="imgFile" multiple>
+<select id="category">
+<option>Tiprasa Rignai</option>
+<option>Takborok Kamchwlwi</option>
+</select><br>
 
-<button class="btn" onclick="addProduct()">Save Product</button>
+<input type="file" id="imgFile" multiple><br>
+<button onclick="addProduct()">Add Product</button>
 
 <hr>
 
 <input id="banner" placeholder="Banner URL">
-<button class="btn" onclick="changeBanner()">Update Banner</button>
+<button onclick="changeBanner()">Change Banner</button>
 
-<input id="rname" placeholder="Customer Name">
+<input id="rname" placeholder="Name">
 <textarea id="rtext"></textarea>
-<button class="btn wa" onclick="addReview()">Add Review</button>
-
-<button class="btn back" onclick="location.reload()">Exit</button>
+<button onclick="addReview()">Add Review</button>
 </div>
 
-<div class="grid" id="grid"></div>
+<!-- PRODUCTS -->
+<div id="grid" class="grid"></div>
 
 <!-- MODAL -->
 <div class="modal" id="modal">
@@ -117,47 +93,41 @@ footer{background:#111;color:#fff;text-align:center;padding:40px;margin-top:40px
 
 <div class="slider" id="slider"></div>
 
-<div class="modal-body">
-<span class="close" onclick="closeModal()">×</span>
+<div style="padding:20px">
 <h2 id="mname"></h2>
 <h3 id="mprice"></h3>
 
-<a id="upiBtn" class="btn upi">Pay via UPI</a>
-<a id="waBtn" target="_blank" class="btn wa">WhatsApp</a>
-<button class="btn back" onclick="closeModal()">Back</button>
-</div>
+<a id="upi" target="_blank"><button>UPI Pay</button></a>
+<a id="wa" target="_blank"><button>WhatsApp</button></a>
 
-<button class="nav-btn prev" onclick="changeSlide(-1)">❮</button>
-<button class="nav-btn next" onclick="changeSlide(1)">❯</button>
+<button onclick="closeModal()">Close</button>
+</div>
 
 </div>
 </div>
 
-<div class="reviews">
-<h2>Customer Reviews</h2>
+<!-- REVIEWS -->
 <div id="reviews"></div>
-</div>
 
 <footer>
-<h3>Tripura Vastra</h3>
-<p onclick="login()" style="cursor:pointer;opacity:0.5;">Owner Login</p>
+<p onclick="login()" style="cursor:pointer">Owner Login</p>
 </footer>
 
 <script>
 const PASS="MATINDRA";
+
 let products=JSON.parse(localStorage.getItem("p"))||[];
 let reviews=JSON.parse(localStorage.getItem("r"))||[];
-let currentSlide=0;
+let current=0;
 
 /* LOGIN */
 function login(){
 if(prompt("Password")==PASS){
 document.getElementById("admin").style.display="block";
-render();
 }
 }
 
-/* RESIZE */
+/* RESIZE IMAGE */
 function resizeImage(file){
 return new Promise(resolve=>{
 let img=new Image();
@@ -168,12 +138,14 @@ reader.onload=e=>img.src=e.target.result;
 img.onload=()=>{
 let canvas=document.createElement("canvas");
 let max=500;
-
 let w=img.width,h=img.height;
-if(w>h){if(w>max){h*=max/w;w=max;}}
-else{if(h>max){w*=max/h;h=max;}}
 
-canvas.width=w;canvas.height=h;
+if(w>h){if(w>max){h*=max/w;w=max}}
+else{if(h>max){w*=max/h;h=max}}
+
+canvas.width=w;
+canvas.height=h;
+
 canvas.getContext("2d").drawImage(img,0,0,w,h);
 resolve(canvas.toDataURL("image/jpeg",0.7));
 };
@@ -186,6 +158,7 @@ reader.readAsDataURL(file);
 async function addProduct(){
 let name=document.getElementById("name").value;
 let price=document.getElementById("price").value;
+let cat=document.getElementById("category").value;
 let files=document.getElementById("imgFile").files;
 
 let images=[];
@@ -193,7 +166,7 @@ for(let f of files){
 images.push(await resizeImage(f));
 }
 
-products.push({name,price,images});
+products.push({name,price,images,cat});
 localStorage.setItem("p",JSON.stringify(products));
 render();
 }
@@ -202,9 +175,12 @@ render();
 function render(){
 let grid=document.getElementById("grid");
 grid.innerHTML="";
+let s=document.getElementById("search").value.toLowerCase();
 
 products.forEach((p,i)=>{
-let adminBtns = document.getElementById("admin").style.display==="block"
+if(!p.name.toLowerCase().includes(s)) return;
+
+let adminBtn = document.getElementById("admin").style.display==="block"
 ? `<button onclick="editProduct(${i})">Edit</button>
    <button onclick="deleteProduct(${i})">Delete</button>`:"";
 
@@ -212,16 +188,17 @@ grid.innerHTML+=`
 <div class="card">
 <img src="${p.images[0]}" onclick="openModal(${i})">
 <h3>${p.name}</h3>
-<p class="price">₹${p.price}</p>
-<button class="btn" onclick="openModal(${i})">View Details</button>
-${adminBtns}
+<p>${p.cat}</p>
+<p>₹${p.price}</p>
+<button onclick="openModal(${i})">View</button>
+${adminBtn}
 </div>`;
 });
 
 let rbox=document.getElementById("reviews");
 rbox.innerHTML="";
 reviews.forEach(r=>{
-rbox.innerHTML+=`<div class="review-box"><b>${r.name}</b><p>${r.text}</p></div>`;
+rbox.innerHTML+=`<div class="review"><b>${r.name}</b><p>${r.text}</p></div>`;
 });
 }
 
@@ -231,28 +208,20 @@ let p=products[i];
 let slider=document.getElementById("slider");
 slider.innerHTML="";
 
-p.images.forEach((img,index)=>{
-slider.innerHTML+=`<img src="${img}" class="${index===0?'active':''}">`;
+p.images.forEach((img,idx)=>{
+slider.innerHTML+=`<img src="${img}" class="${idx===0?'active':''}">`;
 });
 
 document.getElementById("mname").innerText=p.name;
 document.getElementById("mprice").innerText="₹"+p.price;
 
-document.getElementById("waBtn").href=
+document.getElementById("wa").href=
 `https://wa.me/919863653392?text=I want to buy ${p.name} ₹${p.price}`;
 
-document.getElementById("upiBtn").href=
+document.getElementById("upi").href=
 `upi://pay?pa=matindratripura911-1@okaxis&pn=Tripura&am=${p.price}&cu=INR`;
 
 document.getElementById("modal").style.display="flex";
-}
-
-/* SLIDER */
-function changeSlide(d){
-let slides=document.querySelectorAll(".slider img");
-slides[currentSlide].classList.remove("active");
-currentSlide=(currentSlide+d+slides.length)%slides.length;
-slides[currentSlide].classList.add("active");
 }
 
 /* CLOSE */
@@ -262,7 +231,7 @@ document.getElementById("modal").style.display="none";
 
 /* DELETE */
 function deleteProduct(i){
-if(confirm("Delete product?")){
+if(confirm("Delete?")){
 products.splice(i,1);
 localStorage.setItem("p",JSON.stringify(products));
 render();
@@ -270,7 +239,7 @@ render();
 }
 
 /* EDIT */
-async function editProduct(i){
+function editProduct(i){
 let p=products[i];
 p.name=prompt("Name",p.name);
 p.price=prompt("Price",p.price);
@@ -290,7 +259,7 @@ render();
 /* BANNER */
 function changeBanner(){
 let url=document.getElementById("banner").value;
-document.getElementById("hero").style.backgroundImage=`url(${url})`;
+document.querySelector(".hero").style.background=`url(${url}) center/cover`;
 }
 
 render();
