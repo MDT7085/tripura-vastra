@@ -1,140 +1,327 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tripura Vhastra | Traditional Handloom</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        .tripura-red { background-color: #800000; }
-        .tripura-text { color: #800000; }
-        #adminPanel { display: none; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tripura Vastra</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<style>
+:root{
+--primary:#ff6b6b;
+--dark:#2c3e50;
+--light:#f5f5f5;
+--white:#fff;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:Poppins;background:var(--light);}
+
+/* NAV */
+nav{
+display:flex;
+justify-content:space-between;
+padding:15px 25px;
+background:#fff;
+box-shadow:0 2px 10px rgba(0,0,0,0.1);
+}
+.logo{color:#c0392b;font-family:'Playfair Display';}
+
+/* HERO */
+.hero{
+height:250px;
+background:linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)),
+url('https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b');
+background-size:cover;
+display:flex;
+align-items:center;
+justify-content:center;
+flex-direction:column;
+color:#fff;
+text-align:center;
+}
+
+/* CATEGORY */
+.controls{
+background:#fff;
+margin:-40px auto 30px;
+width:90%;
+padding:15px;
+border-radius:15px;
+text-align:center;
+}
+.cat-btn{
+padding:8px 15px;
+border:none;
+border-radius:20px;
+margin:5px;
+background:#eee;
+cursor:pointer;
+}
+.cat-btn.active{
+background:var(--primary);
+color:#fff;
+}
+
+/* GRID */
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+gap:20px;
+padding:20px;
+}
+.card{
+background:#fff;
+border-radius:15px;
+overflow:hidden;
+text-align:center;
+box-shadow:0 4px 10px rgba(0,0,0,0.1);
+}
+.card img{
+width:100%;
+height:300px;
+object-fit:cover;
+}
+.price{color:var(--primary);font-weight:bold;}
+.btn{
+background:var(--dark);
+color:#fff;
+padding:12px;
+border:none;
+border-radius:8px;
+margin:10px;
+cursor:pointer;
+width:80%;
+}
+
+/* MODAL */
+.modal{
+position:fixed;
+top:0;left:0;
+width:100%;height:100%;
+background:rgba(0,0,0,0.8);
+display:none;
+align-items:center;
+justify-content:center;
+}
+.modal-box{
+background:#fff;
+display:grid;
+grid-template-columns:1fr 1fr;
+max-width:900px;
+width:90%;
+border-radius:15px;
+overflow:hidden;
+position:relative;
+}
+.modal img{width:100%;height:100%;object-fit:cover;}
+.modal-body{padding:20px;}
+.close{
+position:absolute;
+right:15px;top:10px;
+font-size:25px;
+cursor:pointer;
+}
+
+/* BUTTON COLORS */
+.upi{background:#3498db;}
+.wa{background:#2ecc71;}
+.back{background:#e74c3c;}
+
+/* ADMIN */
+.admin{
+display:none;
+background:#fff;
+margin:40px auto;
+padding:30px;
+width:90%;
+border-radius:15px;
+border:2px dashed var(--primary);
+}
+.admin input,select,textarea{
+width:100%;
+padding:10px;
+margin:8px 0;
+border-radius:8px;
+border:1px solid #ddd;
+}
+
+/* REVIEWS */
+.reviews{padding:40px;}
+.review-box{
+background:#fff;
+padding:15px;
+border-radius:10px;
+margin-top:10px;
+}
+
+/* FOOTER */
+footer{
+background:#1e2a38;
+color:#fff;
+text-align:center;
+padding:40px;
+margin-top:50px;
+}
+</style>
 </head>
-<body class="bg-gray-50 font-sans">
 
-    <nav class="tripura-red text-white p-4 shadow-lg flex justify-between items-center sticky top-0 z-50">
-        <h1 class="text-2xl font-bold tracking-widest">TRIPURA VHASTRA</h1>
-        <div>
-            <button onclick="toggleAdmin()" class="bg-white text-maroon-800 px-3 py-1 rounded text-sm text-black font-bold">Admin Login</button>
-        </div>
-    </nav>
+<body>
 
-    <div id="bannerDisplay" class="w-full h-64 bg-gray-300 overflow-hidden flex items-center justify-center">
-        <img src="https://images.unsplash.com/photo-1610116303244-6239f81346d2?auto=format&fit=crop&q=80&w=1470" class="w-full h-full object-cover" alt="Banner">
-    </div>
+<nav>
+<div class="logo">TRIPURA VASTRA</div>
+<div><i class="fas fa-user"></i> Account</div>
+</nav>
 
-    <div id="adminPanel" class="max-w-4xl mx-auto p-6 bg-white shadow-xl my-6 rounded-lg border-2 border-red-800">
-        <h2 class="text-xl font-bold mb-4">Admin Management Panel</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <input type="text" id="pName" placeholder="Product Name (e.g. Traditional Rignai)" class="border p-2 rounded">
-            <input type="number" id="pPrice" placeholder="Price (INR)" class="border p-2 rounded">
-            <div class="col-span-2">
-                <label class="block text-sm font-bold mb-1">Upload Product Images (Select multiple):</label>
-                <input type="file" id="pImages" multiple accept="image/*" class="border p-2 w-full rounded">
-            </div>
-            <button onclick="addProduct()" class="tripura-red text-white p-3 rounded font-bold hover:bg-red-900">Add Product to Store</button>
-        </div>
-    </div>
+<section class="hero" id="hero">
+<h1>Tripura Vastra</h1>
+<p>(Tiprasa Kanmung-Chumung)</p>
+</section>
 
-    <div class="max-w-6xl mx-auto p-6">
-        <h2 class="text-3xl font-serif text-center my-8 tripura-text border-b-2 border-red-800 inline-block pb-2">Our Collection</h2>
-        <div id="productGrid" class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            </div>
-    </div>
+<div class="controls">
+<button class="cat-btn active">All</button>
+<button class="cat-btn">Tripura Rignai</button>
+<button class="cat-btn">Debbarma Rignai</button>
+<button class="cat-btn">Reang Rignai</button>
+</div>
 
-    <a href="https://wa.me/9863653392" target="_blank" class="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-2xl hover:scale-110 transition-transform z-50">
-        <i class="fab fa-whatsapp text-3xl"></i>
-    </a>
+<!-- ADMIN PANEL -->
+<div id="admin" class="admin">
+<h2>Owner Dashboard</h2>
 
-    <footer class="bg-gray-900 text-white text-center p-10 mt-20">
-        <p class="text-lg">© 2024 Tripura Vhastra - Preserving Heritage</p>
-        <p class="text-gray-400 mt-2 tracking-widest uppercase text-sm">Website Designed by **MATINDRA B TRIPURA**</p>
-    </footer>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
 
-    <script>
-        let products = JSON.parse(localStorage.getItem('tripura_products')) || [];
+<div>
+<h3>Upload Product</h3>
+<input id="name" placeholder="Product Name">
+<input id="price" type="number" placeholder="Price">
+<input id="img" placeholder="Image URL">
+<button class="btn" onclick="addProduct()">Save Product</button>
+</div>
 
-        function toggleAdmin() {
-            const pass = prompt("Enter Admin Password:");
-            if (pass === "1234") { // Change your password here
-                document.getElementById('adminPanel').style.display = 'block';
-                alert("Login Successful");
-            } else {
-                alert("Wrong Password");
-            }
-        }
+<div>
+<h3>Banner & Reviews</h3>
+<input id="banner" placeholder="Banner Image URL">
+<button class="btn" onclick="changeBanner()">Update Banner</button>
 
-        function addProduct() {
-            const name = document.getElementById('pName').value;
-            const price = document.getElementById('pPrice').value;
-            const files = document.getElementById('pImages').files;
-            
-            if(!name || !price || files.length === 0) return alert("Please fill all details");
+<input id="rname" placeholder="Customer Name">
+<textarea id="rtext" placeholder="Review"></textarea>
+<button class="btn wa" onclick="addReview()">Add Review</button>
+</div>
 
-            // Convert images to Base64 to store in browser
-            const reader = new FileReader();
-            reader.readAsDataURL(files[0]);
-            reader.onload = function () {
-                const newProduct = {
-                    id: Date.now(),
-                    name: name,
-                    price: price,
-                    image: reader.result
-                };
-                products.push(newProduct);
-                localStorage.setItem('tripura_products', JSON.stringify(products));
-                renderProducts();
-                clearInputs();
-            };
-        }
+</div>
 
-        function deleteProduct(id) {
-            products = products.filter(p => p.id !== id);
-            localStorage.setItem('tripura_products', JSON.stringify(products));
-            renderProducts();
-        }
+<button class="btn back" onclick="location.reload()">Exit</button>
+</div>
 
-        function updatePrice(id) {
-            const newPrice = prompt("Enter new price:");
-            if (newPrice) {
-                const index = products.findIndex(p => p.id === id);
-                products[index].price = newPrice;
-                localStorage.setItem('tripura_products', JSON.stringify(products));
-                renderProducts();
-            }
-        }
+<!-- PRODUCTS -->
+<div class="grid" id="grid"></div>
 
-        function renderProducts() {
-            const grid = document.getElementById('productGrid');
-            grid.innerHTML = '';
-            products.forEach(p => {
-                grid.innerHTML += `
-                    <div class="bg-white rounded-lg shadow-md overflow-hidden border hover:shadow-xl transition">
-                        <img src="${p.image}" class="w-full h-64 object-cover">
-                        <div class="p-4">
-                            <h3 class="font-bold text-xl">${p.name}</h3>
-                            <p class="text-red-800 font-bold text-lg">₹${p.price}</p>
-                            <div class="flex gap-2 mt-4">
-                                <button onclick="window.open('https://wa.me/9863653392?text=I want to buy ${p.name}')" class="bg-green-600 text-white flex-1 py-2 rounded">Buy Now</button>
-                                <button onclick="updatePrice(${p.id})" class="bg-gray-200 p-2 rounded text-xs">Edit Price</button>
-                                <button onclick="deleteProduct(${p.id})" class="bg-red-100 text-red-600 p-2 rounded text-xs">Delete</button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            });
-        }
+<!-- MODAL -->
+<div class="modal" id="modal">
+<div class="modal-box">
+<img id="mimg">
+<div class="modal-body">
+<span class="close" onclick="closeModal()">×</span>
+<h2 id="mname"></h2>
+<h3 id="mprice"></h3>
 
-        function clearInputs() {
-            document.getElementById('pName').value = '';
-            document.getElementById('pPrice').value = '';
-            document.getElementById('pImages').value = '';
-        }
+<button class="btn upi">Pay via UPI</button>
+<button class="btn wa">WhatsApp</button>
+<button class="btn back" onclick="closeModal()">Go Back</button>
+</div>
+</div>
+</div>
 
-        // Initial Load
-        renderProducts();
-    </script>
+<!-- REVIEWS -->
+<div class="reviews">
+<h2>Customer Reviews</h2>
+<div id="reviews"></div>
+</div>
+
+<footer>
+<h3>Tripura Vastra (Tiprasa Kanmung-Chumung)</h3>
+<p>DESIGNED BY MATINDRA TRIPURA</p>
+<p style="opacity:0.4;cursor:pointer;" onclick="login()">Owner Login</p>
+</footer>
+
+<script>
+const PASS="MATINDRA";
+
+let products=JSON.parse(localStorage.getItem("p"))||[];
+let reviews=JSON.parse(localStorage.getItem("r"))||[];
+
+/* LOGIN */
+function login(){
+let p=prompt("Enter Password:");
+if(p===PASS){
+document.getElementById("admin").style.display="block";
+}
+}
+
+/* ADD PRODUCT */
+function addProduct(){
+let name=document.getElementById("name").value;
+let price=document.getElementById("price").value;
+let img=document.getElementById("img").value;
+
+products.push({name,price,img});
+localStorage.setItem("p",JSON.stringify(products));
+render();
+}
+
+/* RENDER */
+function render(){
+let grid=document.getElementById("grid");
+grid.innerHTML="";
+products.forEach((p,i)=>{
+grid.innerHTML+=`
+<div class="card" onclick="openModal(${i})">
+<img src="${p.img}">
+<h3>${p.name}</h3>
+<p class="price">₹${p.price}</p>
+<button class="btn">View Details</button>
+</div>`;
+});
+
+let rbox=document.getElementById("reviews");
+rbox.innerHTML="";
+reviews.forEach(r=>{
+rbox.innerHTML+=`<div class="review-box"><b>${r.name}</b><p>${r.text}</p></div>`;
+});
+}
+
+/* MODAL */
+function openModal(i){
+let p=products[i];
+document.getElementById("modal").style.display="flex";
+document.getElementById("mimg").src=p.img;
+document.getElementById("mname").innerText=p.name;
+document.getElementById("mprice").innerText="₹"+p.price;
+}
+function closeModal(){
+document.getElementById("modal").style.display="none";
+}
+
+/* REVIEW */
+function addReview(){
+let name=document.getElementById("rname").value;
+let text=document.getElementById("rtext").value;
+reviews.push({name,text});
+localStorage.setItem("r",JSON.stringify(reviews));
+render();
+}
+
+/* BANNER */
+function changeBanner(){
+let url=document.getElementById("banner").value;
+document.getElementById("hero").style.backgroundImage=`url(${url})`;
+}
+
+render();
+</script>
+
 </body>
 </html>
