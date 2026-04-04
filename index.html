@@ -23,7 +23,7 @@ nav{display:flex;justify-content:space-between;padding:15px;background:#fff}
 
 /* CARD */
 .card{background:#fff;border-radius:10px;overflow:hidden;text-align:center}
-.card img{width:100%;height:340px;object-fit:cover}
+.card img{width:100%;height:360px;object-fit:cover}
 
 /* BUTTON */
 button{padding:10px;border:none;border-radius:5px;background:#333;color:#fff;margin:5px;cursor:pointer}
@@ -56,13 +56,14 @@ footer{text-align:center;background:#111;color:#fff;padding:20px}
 <p>(Tiprasa Kanmung-Chumung)</p>
 </div>
 
-<!-- SEARCH -->
 <div class="search-box">
 <input id="search" placeholder="Search products..." onkeyup="render()">
 </div>
 
 <!-- ADMIN -->
 <div id="admin">
+<h2>Owner Dashboard</h2>
+
 <input id="name" placeholder="Product Name"><br>
 <input id="price" placeholder="Price"><br>
 
@@ -72,19 +73,20 @@ footer{text-align:center;background:#111;color:#fff;padding:20px}
 </select><br>
 
 <input type="file" id="imgFile" multiple><br>
-<button onclick="addProduct()">Add Product</button>
+<button onclick="addProduct()">Save Product</button>
 
 <hr>
 
 <input id="banner" placeholder="Banner URL">
-<button onclick="changeBanner()">Change Banner</button>
+<button onclick="changeBanner()">Update Banner</button>
 
-<input id="rname" placeholder="Name">
+<input id="rname" placeholder="Customer Name">
 <textarea id="rtext"></textarea>
 <button onclick="addReview()">Add Review</button>
+
+<button onclick="exitAdmin()">Exit Dashboard</button>
 </div>
 
-<!-- PRODUCTS -->
 <div id="grid" class="grid"></div>
 
 <!-- MODAL -->
@@ -106,25 +108,30 @@ footer{text-align:center;background:#111;color:#fff;padding:20px}
 </div>
 </div>
 
-<!-- REVIEWS -->
 <div id="reviews"></div>
 
 <footer>
+<p>DESIGNED BY MATINDRA TRIPURA</p>
 <p onclick="login()" style="cursor:pointer">Owner Login</p>
 </footer>
 
 <script>
 const PASS="MATINDRA";
-
 let products=JSON.parse(localStorage.getItem("p"))||[];
 let reviews=JSON.parse(localStorage.getItem("r"))||[];
-let current=0;
 
 /* LOGIN */
 function login(){
 if(prompt("Password")==PASS){
 document.getElementById("admin").style.display="block";
+render();
 }
+}
+
+/* EXIT */
+function exitAdmin(){
+document.getElementById("admin").style.display="none";
+render();
 }
 
 /* RESIZE IMAGE */
@@ -145,8 +152,8 @@ else{if(h>max){w*=max/h;h=max}}
 
 canvas.width=w;
 canvas.height=h;
-
 canvas.getContext("2d").drawImage(img,0,0,w,h);
+
 resolve(canvas.toDataURL("image/jpeg",0.7));
 };
 
@@ -180,7 +187,7 @@ let s=document.getElementById("search").value.toLowerCase();
 products.forEach((p,i)=>{
 if(!p.name.toLowerCase().includes(s)) return;
 
-let adminBtn = document.getElementById("admin").style.display==="block"
+let adminBtns = document.getElementById("admin").style.display==="block"
 ? `<button onclick="editProduct(${i})">Edit</button>
    <button onclick="deleteProduct(${i})">Delete</button>`:"";
 
@@ -191,7 +198,7 @@ grid.innerHTML+=`
 <p>${p.cat}</p>
 <p>₹${p.price}</p>
 <button onclick="openModal(${i})">View</button>
-${adminBtn}
+${adminBtns}
 </div>`;
 });
 
@@ -231,7 +238,7 @@ document.getElementById("modal").style.display="none";
 
 /* DELETE */
 function deleteProduct(i){
-if(confirm("Delete?")){
+if(confirm("Delete product?")){
 products.splice(i,1);
 localStorage.setItem("p",JSON.stringify(products));
 render();
@@ -239,12 +246,36 @@ render();
 }
 
 /* EDIT */
-function editProduct(i){
+async function editProduct(i){
 let p=products[i];
-p.name=prompt("Name",p.name);
-p.price=prompt("Price",p.price);
+
+let name=prompt("Edit name",p.name);
+let price=prompt("Edit price",p.price);
+
+if(name) p.name=name;
+if(price) p.price=price;
+
+let change=confirm("Change images?");
+if(change){
+let input=document.createElement("input");
+input.type="file";
+input.multiple=true;
+
+input.onchange=async()=>{
+let imgs=[];
+for(let f of input.files){
+imgs.push(await resizeImage(f));
+}
+p.images=imgs;
 localStorage.setItem("p",JSON.stringify(products));
 render();
+};
+
+input.click();
+}else{
+localStorage.setItem("p",JSON.stringify(products));
+render();
+}
 }
 
 /* REVIEW */
